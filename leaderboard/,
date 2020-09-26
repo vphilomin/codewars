@@ -1,0 +1,33 @@
+require 'rspec'
+require 'vcr'
+require 'codewars_gateway'
+
+VCR.configure do |c|
+  c.cassette_library_dir = "spec/vcr"
+  c.hook_into :webmock
+  c.configure_rspec_metadata!
+end
+
+describe "Codewars Gateway", :vcr do
+  let (:gateway) { CodewarsGateway.new }
+
+  describe '#overall_leaders' do
+    let (:leaders) { gateway.overall_leaders }
+
+    it "has a count of 500" do
+      expect(leaders.length).to eq(500)
+    end
+
+    specify "top user's name matches" do
+      expect(leaders[0][:name]).to eq('g964')
+    end
+    
+    specify "top user's clan matches" do
+      expect(leaders[0][:clan]).to eq('None')
+    end
+    
+    specify "top user's honor matches" do
+      expect(leaders[0][:honor]).to eq('310018')
+    end
+  end
+end
