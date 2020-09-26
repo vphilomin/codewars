@@ -1,9 +1,11 @@
 require 'mechanize'
 
 class CodewarsGateway
+  URL = 'http://www.codewars.com/users/leaderboard'
+
   def overall_leaders
     agent = Mechanize.new
-    leaderboard_page = agent.get('https://www.codewars.com/users/leaderboard')
+    leaderboard_page = agent.get(URL)
     leaderboard_table = leaderboard_page.search('table')
     leaderboard_rows = leaderboard_table.search('tr')
     leaderboard_rows[1..-1].map { |row|
